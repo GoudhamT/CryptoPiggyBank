@@ -20,4 +20,10 @@ library PriceConvertor {
         uint256 calculateETHAmountInUSD = (ethAmount * currentPrice) / 1e18;
         return (calculateETHAmountInUSD, currentPrice);
     }
+
+    function getVersion(
+        AggregatorV3Interface _priceFeed
+    ) public view returns (uint256) {
+        return _priceFeed.version();
+    }
 }

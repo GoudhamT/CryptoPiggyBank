@@ -69,4 +69,8 @@ contract CryptoPiggyBank {
     function getDepositedAmount() public view returns (uint256) {
         return s_soFarDeposit;
     }
+
+    function getVersionfromFeed() public view returns (uint256) {
+        return PriceConvertor.getVersion(s_aggregatorV3Interface);
+    }
 }
