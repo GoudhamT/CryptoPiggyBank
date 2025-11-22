@@ -3,7 +3,7 @@
 pragma solidity 0.8.19;
 
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
-import {PriceConvertor} from "PriceConvertor.sol";
+import {PriceConvertor} from "./PriceConvertor.sol";
 
 contract CryptoPiggyBank {
     using PriceConvertor for uint256;
