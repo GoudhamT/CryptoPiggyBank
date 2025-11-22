@@ -4,6 +4,7 @@ pragma solidity 0.8.19;
 
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import {PriceConvertor} from "./PriceConvertor.sol";
+import {console} from "forge-std/Script.sol";
 
 contract CryptoPiggyBank {
     using PriceConvertor for uint256;
@@ -37,6 +38,7 @@ contract CryptoPiggyBank {
         i_goalAmount = _goalAmountinUSD * 1e18;
         s_aggregatorV3Interface = AggregatorV3Interface(_priceFeed);
         i_owner = msg.sender;
+        console.log("owner is ", i_owner);
     }
 
     function deposit() public payable {
@@ -57,11 +59,13 @@ contract CryptoPiggyBank {
     }
 
     function withdraw() public ownerOnly {
+        require(address(this).balance > 0, "Not having balance");
+        uint256 contractBalance = address(this).balance;
         (bool callSuccess, ) = payable(i_owner).call{
             value: address(this).balance
         }("");
         if (callSuccess) {
-            emit PiggyBank__amountWithdrawn(i_owner, address(this).balance);
+            emit PiggyBank__amountWithdrawn(i_owner, contractBalance);
         }
     }
 
@@ -72,5 +76,13 @@ contract CryptoPiggyBank {
 
     function getVersionfromFeed() public view returns (uint256) {
         return PriceConvertor.getVersion(s_aggregatorV3Interface);
+    }
+
+    function getGoalAmount() public view returns (uint256) {
+        return i_goalAmount;
+    }
+
+    function getOwner() public view returns (address) {
+        return i_owner;
     }
 }
