@@ -6,7 +6,8 @@ import {CryptoPiggyBank} from "../src/CryptoPiggyBank.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
 
 contract DeployPiggyBank is Script {
-    function run(uint256 _goalAmount) public returns (CryptoPiggyBank) {
+    function run() public returns (CryptoPiggyBank) {
+        uint256 goalAmount = vm.envUint("GOAL_AMOUNT");
         HelperConfig helperConfig = new HelperConfig();
 
         address feedAddress = helperConfig.localNetworkConfig();
@@ -14,7 +15,7 @@ contract DeployPiggyBank is Script {
         vm.startBroadcast();
         console.log("user starting broadcast:", msg.sender);
         CryptoPiggyBank piggyBank = new CryptoPiggyBank(
-            _goalAmount,
+            goalAmount,
             feedAddress
         );
         console.log("user stopping broadcast:", msg.sender);
